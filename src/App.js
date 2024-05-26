@@ -1,135 +1,68 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { useSpring, animated } from 'react-spring';
-import Confetti from 'react-confetti';
-
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background: #ffe4e1;
-`;
-
-const Card = styled(animated.div)`
-  width: 90%;
-  max-width: 320px;
-  height: auto; /* Adjust height to auto for dynamic sizing */
-  perspective: 1000px;
-`;
-
-const CardInner = styled(animated.div)`
-  width: 100%;
-  height: 100%;
-  position: relative;
-  text-align: center;
-  transition: transform 0.6s;
-  transform-style: preserve-3d;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-`;
-
-const CardFront = styled.div`
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  background: #ff69b4;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-`;
-
-const CardBack = styled.div`
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  background: #ff69b4;
-  color: white;
-  border-radius: 10px;
-  transform: rotateY(180deg);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-`;
-
-const Title = styled.h1`
-  margin: 0;
-  font-size: 1.8rem;
-`;
-
-const Text = styled.p`
-  font-size: 1rem;
-`;
-
-const Hearts = styled.div`
-  margin-top: 20px;
-  font-size: 1.8rem;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-`;
-
-const Heart = styled(animated.span)`
-  display: inline-block;
-`;
-
-const HeartBack = styled(animated.span)`
-  display: inline-block;
-  font-size: 3.5rem;
-`;
+import React, { useState } from 'react';
+import './index.css';
 
 const App = () => {
-  const [flipped, setFlipped] = useState(false);
-  const [confetti, setConfetti] = useState(false);
+  const [isFlipped, setIsFlipped] = useState(false);
 
-  const { transform } = useSpring({
-    transform: `rotateY(${flipped ? 180 : 0}deg)`,
-    config: { mass: 5, tension: 500, friction: 80 },
-  });
+  const handleFlip = () => {
+    setIsFlipped(!isFlipped);
 
-  const heartAnimation = useSpring({
-    loop: true,
-    to: [{ transform: 'scale(1.5)' }, { transform: 'scale(1)' }],
-    from: { transform: 'scale(1)' },
-    config: { duration: 1000 },
-  });
-
-  useEffect(() => {
-    if (flipped) {
-      setConfetti(true);
-      const audio = new Audio('/anniversary.mpeg');
-      audio.play();
-    } else {
-      setConfetti(false);
+    if (!isFlipped) {
+      const audio = document.getElementById('audio');
+      if (audio) {
+        audio.play();
+      }
+      createFloatingEmojis();
     }
-  }, [flipped]);
+  };
+
+  const createFloatingEmojis = () => {
+    const emojiContainer = document.createElement('div');
+    emojiContainer.className = 'emoji-container';
+    document.body.appendChild(emojiContainer);
+  
+    const emojis = ['💐', '❤️', '💐', '❤️', '💐', '❤️', '💐', '❤️', '💐', '❤️', '💐', '❤️'];
+  
+    emojis.forEach((emoji, index) => {
+      const emojiElement = document.createElement('div');
+      emojiElement.className = 'floating-emoji';
+      emojiElement.textContent = emoji;
+      emojiElement.style.animationDelay = `${index * 0.5}s`;
+  
+      // Randomize starting position within the viewport
+      const randomX = Math.floor(Math.random() * (window.innerWidth - 30));
+      const randomY = Math.floor(Math.random() * (window.innerHeight - 30));
+      emojiElement.style.left = `${randomX}px`;
+      emojiElement.style.top = `${randomY}px`;
+  
+      emojiContainer.appendChild(emojiElement);
+    });
+  
+    setTimeout(() => {
+      emojiContainer.remove();
+    }, 5000);
+  };
 
   return (
-    <Container>
-      {confetti && <Confetti />}
-      <Card onClick={() => setFlipped(!flipped)}>
-        <CardInner style={{ transform }}>
-          <CardFront>
-            <Title>Happy Anniversary!</Title>
-            <Hearts>
-              <Heart style={heartAnimation} role="img" aria-label="heart">❤️</Heart>
-              <Heart style={heartAnimation} role="img" aria-label="heart">❤️</Heart>
-              <Heart style={heartAnimation} role="img" aria-label="heart">❤️</Heart>
-            </Hearts>
-          </CardFront>
-          <CardBack>
-            <Text>Wishing you a day filled with love and joy.</Text>
-            <Text>Here's to many more wonderful years together!</Text>
-            <HeartBack style={heartAnimation} role="img" aria-label="heart">❤️</HeartBack>
-          </CardBack>
-        </CardInner>
-      </Card>
-    </Container>
+    <div className="card-container" onClick={handleFlip}>
+      <audio id="audio" src="/anniversary.mpeg"></audio>
+      <div className={`card ${isFlipped ? 'flipped' : ''}`}>
+        <div className="front">
+          <h1>Happy Anniversary!</h1>
+          <div className="hearts">
+            <div className="heart">❤️</div>
+            <div className="heart">❤️</div>
+            <div className="heart">❤️</div>
+          </div>
+        </div>
+        <div className="back">
+          <p>Wishing you a day filled with love and joy!</p>
+          
+          <div className="heartt">❤️</div>
+        </div>
+      </div>
+    </div>
   );
-}
+};
 
 export default App;

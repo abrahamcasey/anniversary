@@ -1,12 +1,204 @@
 body {
   margin: 0;
-  font-family: "Cinzel" , "Serif";
+  background-color: black;
+  font-family: "Cinzel", "Serif";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.card-container {
+  perspective: 1000px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0;
+}
+
+.card {
+  width: 400px;
+  height: 300px;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  position: relative;
+  cursor: pointer;
+}
+
+.card-wrapper {
+  position: relative;
+  animation: rotate infinite linear;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.card.flipped {
+  transform: rotateY(180deg);
+}
+
+.card .front, .card .back {
+  position: absolute;
+  font-weight: bold;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 24px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.card .front {
+  background-color: rgb(220, 89, 111);
+}
+
+.card .back {
+  background-color: rgb(220, 89, 111);
+  transform: rotateY(180deg);
+}
+
+.hearts {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.heart {
+  font-size: 30px;
+  animation: beat 1s infinite;
+}
+
+.heart:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.heart:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes beat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+.heartt {
+  font-size: 60px;
+  animation: beat 1s infinite;
+}
+.emoji-container {
+  position: fixed; /* Change from absolute to fixed */
+  top: 0;
+  left: 0;
+  width: 100vw; /* Use viewport width and height */
+  height: 100vh;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.floating-emoji {
+  position: absolute;
+  font-size: 30px;
+  animation: float 5s ease-in-out infinite;
+  left: calc(50vw - 15px); /* Initially position emojis at the center */
+  top: calc(50vh - 15px);
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0) translateX(0); /* Start position */
+  }
+  50% {
+    transform: translateY(-20px) translateX(20px); /* Middle position */
+  }
+  100% {
+    transform: translateY(0) translateX(0); /* End position */
+  }
+}
+
+/* Media queries for responsiveness */
+
+@media only screen and (max-width: 768px) {
+  .card {
+    width: 300px;
+    height: 200px;
+  }
+  .card .front, .card .back {
+    font-size: 20px;
+  }
+  .hearts {
+    margin-top: 5px;
+  }
+  .heart {
+    font-size: 25px;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .card {
+    width: 250px;
+    height: 180px;
+  }
+  .card .front, .card .back {
+    font-size: 12px;
+  }
+  .hearts {
+    margin-top: 5px;
+  }
+  .heart {
+    font-size: 20px;
+  }
+}
+
+@media only screen and (max-width: 320px) {
+  .card {
+    width: 200px;
+    height: 150px;
+  }
+  .card .front, .card .back {
+    font-size: 12px;
+  }
+  .hearts {
+    margin-top: 5px;
+  }
+  .heart {
+    font-size: 16px;
+  }
+}
+
+@media only screen and (max-width: 240px) {
+  .card {
+    width: 180px;
+    height: 120px;
+  }
+  .card .front, .card .back {
+    font-size: 10px;
+  }
+  .hearts {
+    margin-top: 5px;
+  }
+  .heart {
+    font-size: 12px;
+  }
 }
