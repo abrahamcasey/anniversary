@@ -5,16 +5,16 @@ import Confetti from 'react-confetti';
 
 const Container = styled.div`
   display: flex;
-  justify-content: center; /* Horizontally center the content */
-  align-items: center; /* Vertically center the content */
+  justify-content: center;
+  align-items: center;
   height: 100vh;
-  background: #ffe4e1; /* Pastel color */
+  background: #ffe4e1;
 `;
 
 const Card = styled(animated.div)`
   width: 90%;
   max-width: 320px;
-  height: 400px;
+  height: auto; /* Adjust height to auto for dynamic sizing */
   perspective: 1000px;
 `;
 
@@ -29,7 +29,6 @@ const CardInner = styled(animated.div)`
 `;
 
 const CardFront = styled.div`
-  position: absolute;
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
@@ -43,7 +42,6 @@ const CardFront = styled.div`
 `;
 
 const CardBack = styled.div`
-  position: absolute;
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
